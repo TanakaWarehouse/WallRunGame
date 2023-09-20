@@ -9,6 +9,7 @@ TagManager:
   - Grabbing
   - Grabbable
   - Locking
+  - Lockable
   layers:
   - Default
   - TransparentFX
