@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.Experimental.TerrainAPI;
 
@@ -19,16 +20,19 @@ public class LockObject : MonoBehaviour
 
 
     [Header("Lock")]
-    [SerializeField] private float maxLockDistance;
+    [SerializeField] public float maxLockDistance;
     private Rigidbody lockRB;
     public GameObject lockObj;
     private Vector3 recordedVelocity;
     private float recordedMagnitude;
-    
+    private string recordedTag;
+
+
     [Header(("UnLock"))]
     private GameObject releaseObj;
     private Vector3 releaseVelocity;
     private float releaseMagnitude;
+    private string releaseTag;
     private List<GameObject> releaseObjStorage = new List<GameObject>();
 
     [Header("Keybinds")] 
@@ -39,6 +43,7 @@ public class LockObject : MonoBehaviour
     Queue<GameObject> lockObjs = new Queue<GameObject>();
     Queue<Vector3> recordVelocity = new Queue<Vector3>();
     Queue<float> recordMagnitude = new Queue<float>();
+    private Queue<string> recordTags = new Queue<string>();
 
 
     private void Update()
@@ -67,8 +72,9 @@ public class LockObject : MonoBehaviour
             
             Ray ray = cam.ViewportPointToRay(new Vector3(0.5f, 0.5f));
 
-            if (Physics.Raycast(ray, out hit, maxLockDistance))
+            if (Physics.Raycast(ray,  out hit, maxLockDistance))
             {
+
                 lockRB = hit.collider.gameObject.GetComponent<Rigidbody>();
                 
                 //hitしたオブジェクトを取得
@@ -79,8 +85,9 @@ public class LockObject : MonoBehaviour
                 {
                     recordedVelocity = lockRB.velocity.normalized;
                     recordedMagnitude = lockRB.velocity.magnitude;
+                    recordedTag = lockObj.tag;
                     
-                    StorageObjSpeed(lockObj, recordedVelocity.normalized, recordedMagnitude);
+                    StorageObjSpeed(lockObj, recordedVelocity.normalized, recordedMagnitude, recordedTag);
 
                     //速度を止める
                     lockRB.velocity = Vector3.zero;
@@ -90,7 +97,7 @@ public class LockObject : MonoBehaviour
                     
                     //tag変更
                     lockObj.tag = "Locking";
-                    
+
                 }
             }
             
@@ -107,18 +114,26 @@ public class LockObject : MonoBehaviour
             
             releaseVelocity = recordVelocity.Dequeue();
             releaseMagnitude = recordMagnitude.Dequeue();
+            releaseTag = recordTags.Dequeue();
+            
             
             
             //Queueから出たオブジェクトのRigidbody
             lockRB = releaseObj.GetComponent<Rigidbody>();
+            
+            //Queueから出たオブジェクトにtag付ける
+            releaseObj.tag = releaseTag;
 
             if (releaseObj.layer != LayerMask.NameToLayer("grabbing"))
             {
-                lockRB.isKinematic = false;
 
-                if (!releaseObj.CompareTag("Grabbable") && !lockObjs.Contains(releaseObj))
+                if (!lockObjs.Contains(releaseObj) && !releaseObj.CompareTag("Grabbing"))
                 {
                     lockRB.velocity = releaseVelocity * releaseMagnitude;
+
+                    //if(releaseTag != "Lockable") 　これをつけると元々KinematicだったものはKinematicになる 
+                    lockRB.isKinematic = false;
+                    
                     
                     //デバッグ用
                     //Debug.Log(i+1 +"回実行");
@@ -129,22 +144,26 @@ public class LockObject : MonoBehaviour
             
         }
 
+        /*
         for (int n = 0; n < releaseObjStorage.Count; n++)
         {
             //Queueから出たオブジェクトのタグ変更
             releaseObjStorage[n].tag = ("Grabbable");
         }
+        */
         
         lockObjs.Clear();
         recordVelocity.Clear();
         recordMagnitude.Clear();
+        recordTags.Clear();
     }
 
     
-    void StorageObjSpeed(GameObject obj, Vector3 velocity, float magnitude)
+    void StorageObjSpeed(GameObject obj, Vector3 velocity, float magnitude, string preTag)
     {
         lockObjs.Enqueue(obj);
         recordVelocity.Enqueue(velocity);
         recordMagnitude.Enqueue(magnitude);
+        recordTags.Enqueue(preTag);
     }
 }

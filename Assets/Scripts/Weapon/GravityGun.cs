@@ -6,7 +6,8 @@ using UnityEngine;
 public class GravityGun : MonoBehaviour
 {
     [SerializeField] Camera cam;
-    [SerializeField] private float maxGrabDistance = 10f, throwForce = 20f, lerpSpeed = 10f, rotationSpeed = 5f; 
+    [SerializeField] public float maxGrabDistance = 10f;
+    [SerializeField] private float throwForce = 20f, lerpSpeed = 10f, rotationSpeed = 5f; 
     [SerializeField] private Transform objectHolder;
 
     public Rigidbody grabedRB;
@@ -55,7 +56,7 @@ public class GravityGun : MonoBehaviour
                 
                 //タグを元に戻す
                 grabObj.tag = "Grabbable";
-                
+
                 //レイヤーを元に戻す
                 grabObj.layer = preLayer;
                 
@@ -83,6 +84,7 @@ public class GravityGun : MonoBehaviour
                 
                 //タグを元に戻す
                 grabObj.tag = preTag;
+                preTag = null;
                 
                 grabObj.layer = preLayer;
 
@@ -98,9 +100,12 @@ public class GravityGun : MonoBehaviour
                 //(0.5f,0.5f)だと画面のど真ん中にRayをとばす．
                 Ray ray = cam.ViewportPointToRay(new Vector3(0.5f, 0.5f));
 
-                if (Physics.Raycast(ray, out hit, maxGrabDistance)　&& (hit.collider.CompareTag("Grabbable")　|| hit.collider.CompareTag("Locking")))
+                
+                //もしロックしているやつもつかみたいならこっち
+                //if (Physics.Raycast(ray, out hit, maxGrabDistance)　&& (hit.collider.CompareTag("Grabbable")　|| hit.collider.CompareTag("Locking")))
+                
+                if (Physics.Raycast(ray, out hit, maxGrabDistance)　&& hit.collider.CompareTag("Grabbable"))
                 {
-                    
                     
                     //Rayがhitしたオブジェクトを取得
                     grabObj = hit.collider.gameObject;

@@ -14,6 +14,8 @@ public class WallRunning : MonoBehaviour
     public float wallClimbSpeed;
     public float maxWallRunTime;
     private float wallRunTimer;
+    private float actualWallRotation;
+    private float wallRotationVel;
 
     [Header("Input")] 
     public KeyCode jumpKey = KeyCode.Space;
@@ -29,8 +31,8 @@ public class WallRunning : MonoBehaviour
     public float minJumpHeight;
     private RaycastHit leftWallhit;
     private RaycastHit rightWallhit;
-    private bool wallLeft;
-    private bool wallRight;
+    public bool wallLeft;
+    public bool wallRight;
 
     [Header("Exiting")] 
     private bool exitingWall;
@@ -61,12 +63,14 @@ public class WallRunning : MonoBehaviour
     {
         CheckForWall();
         StateMachine();
+
     }
 
     private void FixedUpdate()
     {
         if (pm.wallRunning)
             WallRunningMovement();
+        
     }
 
     private void CheckForWall()
@@ -140,10 +144,13 @@ public class WallRunning : MonoBehaviour
         rb.velocity = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
 
         // apply camera effects
+        /*
         cam.DoFov(90f);
         if (wallLeft) cam.DoTilt(-5f);
         if (wallRight) cam.DoTilt(5f);
+        */
         
+
     }
     
     private void WallRunningMovement()
@@ -180,8 +187,12 @@ public class WallRunning : MonoBehaviour
         pm.wallRunning = false;
 
         // reset camera effects
+       /*
         cam.DoFov(80f);
         cam.DoTilt(0f);
+        */
+       
+       
     }
 
     void wallJump()

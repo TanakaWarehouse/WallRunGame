@@ -8,7 +8,7 @@ using UnityEngine.EventSystems;
 public class PlayerMovement : MonoBehaviour
 {
     [Header("Movement")] 
-    private float moveSpeed;
+    public float moveSpeed;
     private float desireMoveSpeed;
     private float lastDesireMoveSpeed;
     public float walkSpeed;
@@ -41,7 +41,8 @@ public class PlayerMovement : MonoBehaviour
     public float maxSliderTime;
     public float slideForce;
     private float sliderTimer;
-
+    
+    
     [Header("TimeStop")]
     private TimeManager timemanager;
 
@@ -57,7 +58,10 @@ public class PlayerMovement : MonoBehaviour
     [Header("Ground Check")] 
     public float playerHeight; 
     public LayerMask whatIsGround;
+    private RaycastHit groundHit;
     public bool grounded;
+    public bool isOnPlatform;
+    
 
     [Header("Slope Handling")] 
     public float maxSlopeAngle;
@@ -73,9 +77,10 @@ public class PlayerMovement : MonoBehaviour
     private float horizontalInput;
     private float verticalInput;
 
-    private Vector3 moveDirection;
+    public Vector3 moveDirection;
 
-    private Rigidbody rb;
+    public Rigidbody rb;
+    public Rigidbody platformRB;
 
     [Header("State")]
     public MovementState state;
@@ -96,6 +101,10 @@ public class PlayerMovement : MonoBehaviour
     public bool wallRunning;
     public bool climbing;
     public bool swinging;
+    
+
+    
+    
     
     
     
@@ -118,12 +127,15 @@ public class PlayerMovement : MonoBehaviour
 
     // Update is called once per frame
     void Update()
-    {
+    { 
+        
+        
         //デバッグ用
-        //Debug.Log(rb.velocity.magnitude);
+        //Debug.Log(rb.velocity);
         //Debug.Log(jumpCount);
         //Debug.Log(readyToJump);
         //Debug.Log(sliderTimer);
+        
 
         //AキーとDキーに対応
         horizontalInput = Input.GetAxisRaw("Horizontal");
@@ -132,7 +144,7 @@ public class PlayerMovement : MonoBehaviour
         verticalInput = Input.GetAxisRaw("Vertical");
         
         //地面があるかのチェック
-        grounded = Physics.Raycast(transform.position, Vector3.down, playerHeight * 0.5f + 0.2f , whatIsGround);
+        grounded = Physics.Raycast(transform.position, Vector3.down, out groundHit, playerHeight * 0.5f + 0.2f , whatIsGround);
         
         MyInput();
         SpeedControl();
@@ -229,6 +241,7 @@ public class PlayerMovement : MonoBehaviour
         {
             state = MovementState.swinging;
             desireMoveSpeed = swingSpeed;
+            
         }
         
         //スライディングモード
@@ -389,14 +402,36 @@ public class PlayerMovement : MonoBehaviour
                 rb.velocity = rb.velocity.normalized * moveSpeed;
         }
         
+        //動く床上の時(こことPlatformControlerいじればいけそう)
+        /*
+        else if(isOnPlatform)
+        {
+            Vector3 flatVel = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
+            
+            rb.AddForce(platformRB.velocity * Time.fixedDeltaTime, ForceMode.VelocityChange);
+            
+            
+            
+            if (flatVel.magnitude > moveSpeed + + platformRB.GetPointVelocity(Vector3.zero).magnitude  && !platformRB.isKinematic)
+            {
+                Vector3 limitedVel = flatVel.normalized * moveSpeed;
+                rb.velocity = new Vector3(limitedVel.x , rb.velocity.y, limitedVel.z);
+            }
+
+        }
+        */
+        
         //速度制限(地面・空中時)
         else
         {
             Vector3 flatVel = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
-        
+            
+
             if (flatVel.magnitude > moveSpeed)
             {
                 Vector3 limitedVel = flatVel.normalized * moveSpeed;
+                
+                
                 rb.velocity = new Vector3(limitedVel.x, rb.velocity.y, limitedVel.z);
             }
         }
