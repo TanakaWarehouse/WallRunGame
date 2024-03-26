@@ -70,6 +70,7 @@ public class PlayerMovement : MonoBehaviour
 
     [Header("References")] 
     public Climb climbScript;
+    [SerializeField] private ControlableManager controlableManager;
     
     public Transform orientation;
 
@@ -136,8 +137,8 @@ public class PlayerMovement : MonoBehaviour
         //Debug.Log(readyToJump);
         //Debug.Log(sliderTimer);
         
-
-        //AキーとDキーに対応
+        if(controlableManager.controlable){
+            //AキーとDキーに対応
         horizontalInput = Input.GetAxisRaw("Horizontal");
         
         //WキーとSキーに対応
@@ -156,6 +157,8 @@ public class PlayerMovement : MonoBehaviour
             rb.drag = groundDrag;
         else
             rb.drag = 0;
+
+        }
         
     }
 

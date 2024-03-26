@@ -6,18 +6,30 @@ using UnityEngine.SceneManagement;
 public class SceneHandler_Stage : MonoBehaviour
 {
     
-    [Header("Fader")]
-    [SerializeField] private RectTransform TransitionImg;
+    //シーン遷移の素材
+    [Header("Decoration")]
+    [SerializeField] private RectTransform topDecoration;
+    [SerializeField] private RectTransform bottomDecoration;
+    [SerializeField] private GameObject stageSelectText;
+
+    [Header("References")]
+    [SerializeField] private ControlableManager controlableManager;
+    [SerializeField] private CountDownTimer countDownTimer;
+    
 
     private void Start()
     {
-        TransitionImg.gameObject.SetActive(true);
-
-        LeanTween.scale(TransitionImg, new Vector3(100,100,0), 0f);
-        LeanTween.scale(TransitionImg, Vector3.zero, 1.0f).setOnComplete(() =>
+        //LeanTween.rotate(stageSelectText, new Vector3(0, 0, 3.5f), .3f);
+        LeanTween.moveY(topDecoration, 800f, 1.0f).setEase(LeanTweenType.easeOutQuart).setDelay(1.5f);
+        LeanTween.moveY(bottomDecoration, -800f, 1.0f).setEase(LeanTweenType.easeOutQuart).setDelay(1.5f).setOnComplete(() =>
         {
-            TransitionImg.gameObject.SetActive(false);
+            controlableManager.controlable = true;
+            countDownTimer.countDownable = true;
+            topDecoration.gameObject.SetActive(false);
+            bottomDecoration.gameObject.SetActive(false);
         });
+
+
     }
     
     
