@@ -112,9 +112,9 @@ Material:
     - Vector1_096180af03b843d4b64323e1549fe831: 0.15
     - Vector1_25fdf974a9b94698820216ee2b3de4fb: 0.511
     - Vector1_2f81f865786c41ad8c39b00eea6951dc: 32
-    - Vector1_75cc0c93b8d24c7a984dcf6400ae724d: 0.1
+    - Vector1_75cc0c93b8d24c7a984dcf6400ae724d: 0
     - Vector1_b6d949cd9ec0474d9139e8e56fa15575: 0
-    - Vector1_bd1f2d5990c14399b646fae0ce0749ac: 0.716
+    - Vector1_bd1f2d5990c14399b646fae0ce0749ac: 1
     - _AlphaClip: 0
     - _Blend: 0
     - _BumpScale: 1
@@ -144,8 +144,10 @@ Material:
     - _WorkflowMode: 1
     - _ZWrite: 1
     m_Colors:
-    - Vector3_04cf1815bd4d40feb7168ffb9a884ee4: {r: 1, g: 1, b: 1, a: 1}
-    - Vector3_43fd7abed47143d590aac9a3d06f4af1: {r: 0.9, g: 0.9, b: 0.9, a: 1}
+    - Vector2_64f99143eaf74a5f98f7c5aa2eb7698f: {r: 0, g: 0, b: 0, a: 1}
+    - Vector2_72bef4c08a324429a97d7a0836ae1210: {r: 1, g: 1, b: 1, a: 100}
+    - Vector3_04cf1815bd4d40feb7168ffb9a884ee4: {r: 0, g: 0, b: 0, a: 0}
+    - Vector3_43fd7abed47143d590aac9a3d06f4af1: {r: 0, g: 0, b: 0, a: 0}
     - Vector3_638563fb100f42d08f2ccd88c70ba7e8: {r: 0.4, g: 0.4, b: 0.4, a: 1}
     - Vector3_7ff0fa8960fc4929aac068ea6a1a3eb5: {r: 1, g: 1, b: 1, a: 1}
     - _Albedo: {r: 1, g: 1, b: 1, a: 0}

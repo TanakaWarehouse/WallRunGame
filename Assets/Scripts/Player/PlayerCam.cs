@@ -34,12 +34,12 @@ public class PlayerCam : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    void LateUpdate()
     {
         //マウスのx,yインプット
         //GetAxisRaw()は矢印キーの左を押すと-1,右を押すと1,何も押さないと0を取得．
-        float mouseX = Input.GetAxisRaw("Mouse X") * Time.deltaTime * sensX;
-        float mouseY = Input.GetAxisRaw("Mouse Y") * Time.deltaTime * sensY;
+        float mouseX = Input.GetAxisRaw("Mouse X") * Time.unscaledDeltaTime * sensX;
+        float mouseY = Input.GetAxisRaw("Mouse Y") * Time.unscaledDeltaTime * sensY;
 
         yRotation += mouseX;
         xRotation -= mouseY;

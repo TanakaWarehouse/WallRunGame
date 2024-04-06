@@ -52,7 +52,7 @@ public class LockObject : MonoBehaviour
         //Debug.Log(lockObjs.Count);
         //Debug.Log(releaseObjStorage.Count);
         
-        if (Input.GetKeyDown(lockObjKey) && !gravityGun.grabedRB)
+        if (Input.GetKeyDown(lockObjKey))
         {
             Lock();
         }
@@ -71,14 +71,17 @@ public class LockObject : MonoBehaviour
         RaycastHit hit;
             
             Ray ray = cam.ViewportPointToRay(new Vector3(0.5f, 0.5f));
+            int LayerMask = 1 << 12;
+            LayerMask = ~LayerMask;
 
-            if (Physics.Raycast(ray,  out hit, maxLockDistance))
+            if (Physics.Raycast(ray,  out hit, maxLockDistance, LayerMask))
             {
 
                 lockRB = hit.collider.gameObject.GetComponent<Rigidbody>();
                 
                 //hitしたオブジェクトを取得
                 lockObj = hit.collider.gameObject;
+
                 
 
                 if (lockRB && lockRB.velocity.magnitude >= 0f && !lockObj.CompareTag("Locking"))

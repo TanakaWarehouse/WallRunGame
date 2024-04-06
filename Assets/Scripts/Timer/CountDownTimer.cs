@@ -10,13 +10,12 @@ public class CountDownTimer : MonoBehaviour
 
     [Header("Timer")]
     [SerializeField] public float countDownTime = 10.0f;
-    [SerializeField] public bool playable;
     [SerializeField] public bool countDownable;
 
     // Start is called before the first frame update
     void Start()
     {
-        playable = true;
+        
     }
 
     // Update is called once per frame
@@ -29,7 +28,7 @@ public class CountDownTimer : MonoBehaviour
         if(countDownTime <= 0){
 
             countDownTime = 0;
-            playable = false;
+            
             
         }
 

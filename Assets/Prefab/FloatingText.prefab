@@ -57,7 +57,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: -5850319046851788368, guid: 4a8875992307c1b478f1f8102dd6042a, type: 2}
+  - {fileID: 2100000, guid: bc5d513df2b15e741988e215bbb9080b, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -102,7 +102,7 @@ MonoBehaviour:
   m_text: Some Text
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 4a8875992307c1b478f1f8102dd6042a, type: 2}
-  m_sharedMaterial: {fileID: -5850319046851788368, guid: 4a8875992307c1b478f1f8102dd6042a, type: 2}
+  m_sharedMaterial: {fileID: 2100000, guid: bc5d513df2b15e741988e215bbb9080b, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -183,8 +183,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f92d527cebdfc6648a76b1801ea7dab0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  destroyTime: 1
-  firstTweenTime: 0.52
-  secondTweenTime: 0.5
+  destroyTime: 2
+  scaleUpTime: 0.15
+  textScale: 0.8
+  delay: 0.5
+  scaleDownTime: 0.2
   offset: {x: 0, y: 4, z: 0}
-  randomizeIntensity: {x: 0.5, y: 0, z: 0}
+  randomizeIntensity: {x: 2, y: 0, z: 0}

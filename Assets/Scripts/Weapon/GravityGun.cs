@@ -7,7 +7,8 @@ public class GravityGun : MonoBehaviour
 {
     [SerializeField] Camera cam;
     [SerializeField] public float maxGrabDistance = 10f;
-    [SerializeField] private float throwForce = 20f, lerpSpeed = 10f, rotationSpeed = 5f; 
+    [SerializeField] private float throwForce = 20f, throwUpForce = 10f, dropForce = 10f, dropUpForce = 10f, tweenTime = .1f, rotationSpeed = 5f; 
+    private float currentVelocity;
     [SerializeField] private Transform objectHolder;
 
     public Rigidbody grabedRB;
@@ -37,7 +38,8 @@ public class GravityGun : MonoBehaviour
         {
 
             //移動
-            grabedRB.MovePosition(Vector3.Lerp(grabedRB.position, objectHolder.transform.position, Time.deltaTime * lerpSpeed));
+            //grabedRB.MovePosition(Vector3.Slerp(grabedRB.position, objectHolder.transform.position, Time.deltaTime * lerpSpeed));
+           
             
             
             //回転
@@ -60,7 +62,14 @@ public class GravityGun : MonoBehaviour
                 //レイヤーを元に戻す
                 grabObj.layer = preLayer;
                 
+                //Tween中だったらそれキャンセル
+                LeanTween.cancel(grabObj);
+
+                //親子関係もとに戻す
+                grabObj.transform.SetParent(null);
+                
                 grabedRB.AddForce(cam.transform.forward * throwForce, ForceMode.VelocityChange);
+                grabedRB.AddForce(cam.transform.up * throwUpForce, ForceMode.VelocityChange);
                 grabedRB = null;
             }
         }
@@ -86,7 +95,16 @@ public class GravityGun : MonoBehaviour
                 grabObj.tag = preTag;
                 preTag = null;
                 
+                //レイヤーもとに戻す
                 grabObj.layer = preLayer;
+
+                //親子関係もとに戻す
+                grabObj.transform.SetParent(null);
+                
+                //ドロップするときちょっとだけ投げる
+                LeanTween.cancel(grabObj);
+                grabedRB.AddForce(cam.transform.forward * dropForce, ForceMode.VelocityChange);
+                grabedRB.AddForce(cam.transform.up * dropUpForce, ForceMode.VelocityChange);
 
                 grabedRB = null;
             }
@@ -104,7 +122,7 @@ public class GravityGun : MonoBehaviour
                 //もしロックしているやつもつかみたいならこっち
                 //if (Physics.Raycast(ray, out hit, maxGrabDistance)　&& (hit.collider.CompareTag("Grabbable")　|| hit.collider.CompareTag("Locking")))
                 
-                if (Physics.Raycast(ray, out hit, maxGrabDistance)　&& hit.collider.CompareTag("Grabbable"))
+                if (Physics.Raycast(ray, out hit, maxGrabDistance) && hit.collider.CompareTag("Grabbable"))
                 {
                     
                     //Rayがhitしたオブジェクトを取得
@@ -123,6 +141,16 @@ public class GravityGun : MonoBehaviour
                     grabObj.layer = LayerMask.NameToLayer("grabbing");
                     
                     grabedRB = hit.collider.gameObject.GetComponent<Rigidbody>();
+
+                    //つかんだボールを装備
+                    grabObj.transform.SetParent(objectHolder);
+                    //grabObj.transform.localPosition = Vector3.zero;
+                    LeanTween.moveLocal(grabObj, Vector3.zero, tweenTime);
+                    grabObj.transform.localRotation = Quaternion.Euler(Vector3.zero);
+                    grabObj.transform.localScale = Vector3.one;
+
+
+
 
 
                     if (grabedRB)

@@ -9,6 +9,7 @@ public class Enemy : MonoBehaviour
     [SerializeField] private CountDownTimer countDownTimer;
     [SerializeField] private Camera playerCam;
     [SerializeField] private ScoreManager scoreManager;
+    [SerializeField] private CalculateResult calculateResult;
 
     [Header("EnemyStatus")]
     [SerializeField] private float defaultScore = 100;
@@ -22,6 +23,7 @@ public class Enemy : MonoBehaviour
 
     [Header("Animation")]
     private Animator dummyAnim;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -58,7 +60,10 @@ public class Enemy : MonoBehaviour
                 ShowFloatingText();
 
                 //スコアの加算
-                AddScore();
+                scoreManager.AddScore(nowScore());
+
+                //ターゲットヒット数加算
+                calculateResult.Hit();
 
                 //1回当たったらそれ以降はスコアなし
                 canGetScore = false;
@@ -78,7 +83,6 @@ public class Enemy : MonoBehaviour
 
     }
 
-    void AddScore(){
-        scoreManager.score += nowScore();
-    }
+    
+
 }

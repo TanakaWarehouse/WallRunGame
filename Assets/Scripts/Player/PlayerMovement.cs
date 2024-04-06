@@ -138,7 +138,7 @@ public class PlayerMovement : MonoBehaviour
         //Debug.Log(sliderTimer);
         
         if(controlableManager.controlable){
-            //AキーとDキーに対応
+        //AキーとDキーに対応
         horizontalInput = Input.GetAxisRaw("Horizontal");
         
         //WキーとSキーに対応

@@ -17,9 +17,6 @@ public class ControlableManager : MonoBehaviour
     }
 
     
-    public void Update(){
-        
-    }
 
     //これで今コントロールできるかどうかを取得可能
     public bool SetControrableState(){

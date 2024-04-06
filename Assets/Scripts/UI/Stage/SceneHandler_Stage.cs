@@ -6,15 +6,19 @@ using UnityEngine.SceneManagement;
 public class SceneHandler_Stage : MonoBehaviour
 {
     
+    [Header("References")]
+    [SerializeField] private ControlableManager controlableManager;
+    [SerializeField] private CountDownTimer countDownTimer;
+    
     //シーン遷移の素材
     [Header("Decoration")]
     [SerializeField] private RectTransform topDecoration;
     [SerializeField] private RectTransform bottomDecoration;
     [SerializeField] private GameObject stageSelectText;
 
-    [Header("References")]
-    [SerializeField] private ControlableManager controlableManager;
-    [SerializeField] private CountDownTimer countDownTimer;
+
+
+    
     
 
     private void Start()
@@ -31,7 +35,9 @@ public class SceneHandler_Stage : MonoBehaviour
 
 
     }
-    
+
+
+
     
     
 }

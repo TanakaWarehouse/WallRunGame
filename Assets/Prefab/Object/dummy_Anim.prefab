@@ -307,7 +307,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   countDownTimer: {fileID: 0}
   playerCam: {fileID: 0}
-  defaultScore: 100
+  scoreManager: {fileID: 0}
+  calculateResult: {fileID: 0}
+  defaultScore: 500
   FloatingTextPrefab: {fileID: 8638385471013706716, guid: 5f74f226d2ca9484b87d58f6fdc0ed36, type: 3}
 --- !u!95 &3315680550959187507
 Animator:
